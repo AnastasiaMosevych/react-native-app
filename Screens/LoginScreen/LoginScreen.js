@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
-import { ImageBackground, StyleSheet, View, Text, Button, SafeAreaView } from "react-native";
+import { ImageBackground, StyleSheet, View, Text, Button, SafeAreaView, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import RegisterButton from '../../Components/Button';
+import RegisterButton from '../../Components/RegisterButton';
+import { Entypo } from '@expo/vector-icons';
 
 const backgroundImage = require('../../Images/BackgroundPhoto.jpeg');
 
 export const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(true);
+
+    const togglePassword = () => {
+        setPasswordVisible(!passwordVisible);
+    }
 
     const onLogin = () => {
         console.log(`${email}, ${password}`);
@@ -22,7 +28,22 @@ export const LoginScreen = ({ navigation }) => {
                     <View style={{ ...styles.container }}>
                         <Text style={styles.title}>Log In</Text>
                         <TextInput value={email} style={styles.input} placeholder="Email address" onChangeText={setEmail}></TextInput>
-                        <TextInput value={password} style={styles.input} placeholder='Password' onChangeText={setPassword}></TextInput>
+                        <View>
+                            <TextInput
+                                value={password}
+                                secureTextEntry={passwordVisible}
+                                style={styles.input}
+                                placeholder="Password"
+                                onChangeText={setPassword}
+                            /> 
+                            <TouchableOpacity style={styles.eyeIcon} onPress={togglePassword}>
+                                {passwordVisible ? (
+                                    <Entypo name='eye' size={20} color='black'/>         
+                                    ) : (
+                                    <Entypo name='eye-with-line' size={20} color='black'/>
+                                )}
+                            </TouchableOpacity>        
+                        </View>
                         <RegisterButton title="Log in" style={styles.button} onPress={onLogin}></RegisterButton>
                         <Button title="Don't have an account? Register" style={styles.secondButton} onPress={() => navigation.navigate('Registration')}></Button>
                     </View>
@@ -50,6 +71,14 @@ const styles = StyleSheet.create({
         display: 'flex',
         gap: 16,
         alignItems: 'center',
+    },
+    backgroundImage: {
+        position: 'absolute',
+        flex: 1,
+        resizeMode: 'contain',
+        width: '100%',
+        height: '100%',
+        zIndex: 1,
     },
     title: {
         fontFamily: 'RobotoBold',
@@ -83,5 +112,11 @@ const styles = StyleSheet.create({
     },
     keyContainer: {
         flex: 1,
+    },
+    eyeIcon: {
+        color: '#1B4371',
+        position: 'absolute',
+        right: 16,
+        top: 16,
     },
 })

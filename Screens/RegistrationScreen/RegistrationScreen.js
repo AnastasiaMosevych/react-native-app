@@ -1,10 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Alert, Dimensions, StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback, TextInput, Button, Keyboard, KeyboardAvoidingView, SafeAreaView } from "react-native";
+import { Dimensions, StyleSheet, View, Text, Image, ImageBackground, TextInput, TouchableWithoutFeedback, TouchableOpacity, Button, Keyboard, SafeAreaView } from "react-native";
 import { PlusCircle } from 'react-native-feather';
-import RegisterButton from '../../Components/Button';
+import RegisterButton from '../../Components/RegisterButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import { Entypo } from '@expo/vector-icons';
 
 const window = Dimensions.get('window');
 const backgroundImage = require('../../Images/BackgroundPhoto.jpeg');
@@ -14,6 +14,11 @@ export const RegistrationScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [avatar, setAvatar] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(true);
+
+    const togglePassword = () => {
+        setPasswordVisible(!passwordVisible);
+    }
 
     const onRegister = () => {
         console.log(`${login}, ${email}, ${password}`);
@@ -37,11 +42,24 @@ export const RegistrationScreen = ({ navigation }) => {
                     <Text style={styles.title}>Registration</Text>
                     <TextInput value={login} style={styles.input} placeholder='Log in' onChangeText={setLogin}></TextInput>
                     <TextInput value={email} style={styles.input} placeholder='Email address' onChangeText={setEmail}></TextInput>
-                    <TextInput value={password} secureTextEntry={true} style={styles.input}
-                    placeholder="Password" onChangeText={setPassword}
-                    />
-                        <RegisterButton  onPress={onRegister} />
-                        <Button title="Already have an account? Log in" style={styles.secondButton} onPress={() => navigation.navigate('Login')}></Button>
+                    <View>
+                        <TextInput
+                            value={password}
+                            secureTextEntry={passwordVisible}
+                            style={styles.input}
+                            placeholder="Password"
+                            onChangeText={setPassword}
+                        /> 
+                        <TouchableOpacity style={styles.eyeIcon} onPress={togglePassword}>
+                            {passwordVisible ? (
+                                <Entypo name='eye' size={20} color='black'/>         
+                                ) : (
+                                <Entypo name='eye-with-line' size={20} color='black'/>
+                            )}
+                        </TouchableOpacity>        
+                    </View>
+                    <RegisterButton  onPress={onRegister} />
+                    <Button title="Already have an account? Log in" style={styles.secondButton} onPress={() => navigation.navigate('Login')}></Button>
                     </View>
                     </TouchableWithoutFeedback>
                 <View style={{ height: 80 }} />
@@ -125,7 +143,12 @@ const styles = StyleSheet.create({
         height: 51,
         width: 343,
     },
-    
+    eyeIcon: {
+        color: '#1B4371',
+        position: 'absolute',
+        right: 16,
+        top: 16,
+    }
 })
 
 export default RegistrationScreen;

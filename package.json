@@ -18,7 +18,8 @@
     "react-native-feather": "^1.1.2",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
-    "react-native-keyboard-aware-scrollview": "^2.1.0"
+    "react-native-keyboard-aware-scrollview": "^2.1.0",
+    "react-native-paper": "^5.10.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
