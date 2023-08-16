@@ -3,7 +3,7 @@ import PostsScreen from '../PostsScreen/PostsScreen';
 import ProfileScreen from '../ProfileScreen/ProfileScreen';
 import CreatePostsScreen from '../CreatePostsScreen/CreatePosts';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { LogOut } from "react-native-feather";
+import { LogOut, ArrowLeft } from "react-native-feather";
 import { StyleSheet, View } from 'react-native';
 
 
@@ -56,7 +56,21 @@ function TabBar({navigation}) {
                 ),
             }}
             />
-        <Tabs.Screen name='Create Posts' component={CreatePostsScreen}/>
+            <Tabs.Screen
+                name="Create Posts"
+                component={CreatePostsScreen}
+                options={{
+                    title: "Create Post",
+                    headerTitleStyle: {
+                    marginBottom: 11,
+                    fontWeight: 500,
+                    fontSize: 17,
+                    },
+                    headerLeft: () => (
+                        <ArrowLeft size={24} color='#212121' style={styles.arrowIcon}/>
+                    ),
+                }}
+            />
         <Tabs.Screen name="Profile" component={ProfileScreen} />
     </Tabs.Navigator> 
     )
@@ -71,8 +85,11 @@ export const Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     logoutIcon: {
-    marginRight: 16,
-  },
+        marginRight: 16,
+    },
+    arrowIcon: {
+        marginLeft: 16,
+    }
 })
 
 export default Home;
