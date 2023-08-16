@@ -6,7 +6,7 @@ export const CustomisedInput = (props) => {
   return (
     <TextInput
       {...props}
-      style={[props.style, isFocused && {borderWidth: 1, borderColor: '#FF6C00'}]}
+      style={[props.style, isFocused && {borderWidth: 1, borderColor: '#FF6C00', backgroundColor: '#FFFFFF'}]}
       onBlur={() => setIsFocused(false)}
       onFocus={() => setIsFocused(true)}
     />

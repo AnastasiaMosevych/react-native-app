@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, View, Text, Button, SafeAreaView, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import RegisterButton from '../../Components/RegisterButton';
+import { CustomisedInput } from '../../Components/CustomisedInput';
 // import { Entypo } from '@expo/vector-icons';
 
 const backgroundImage = require('../../Images/BackgroundPhoto.jpeg');
@@ -28,9 +28,9 @@ export const LoginScreen = ({ navigation }) => {
                 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} style={styles.keyContainer}>
                     <View style={{ ...styles.container }}>
                         <Text style={styles.title}>Log In</Text>
-                        <TextInput value={email} style={styles.input} placeholder="Email address" onChangeText={setEmail}></TextInput>
+                        <CustomisedInput value={email} style={styles.input} placeholder="Email address" onChangeText={setEmail}></CustomisedInput>
                         <View>
-                            <TextInput
+                            <CustomisedInput
                                 value={password}
                                 secureTextEntry={passwordVisible}
                                 style={styles.input}

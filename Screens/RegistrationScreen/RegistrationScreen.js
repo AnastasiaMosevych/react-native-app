@@ -15,7 +15,6 @@ export const RegistrationScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [avatar, setAvatar] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(true);
-    const [isFocused, setIsFocused] = useState(false);
 
     const togglePassword = () => {
         setPasswordVisible(!passwordVisible);
@@ -42,13 +41,13 @@ export const RegistrationScreen = ({ navigation }) => {
                         </View>
                     </View>
                     <Text style={styles.title}>Registration</Text>
-                            <CustomisedInput
-                                value={login}
-                                style={styles.input}
-                                placeholder='Log in'
-                                onChangeText={setLogin}
-                            >
-                            </CustomisedInput>
+                    <CustomisedInput
+                        value={login}
+                        style={styles.input}
+                        placeholder='Log in'
+                        onChangeText={setLogin}
+                     >
+                    </CustomisedInput>
                     <CustomisedInput value={email} style={styles.input} placeholder='Email address' onChangeText={setEmail}></CustomisedInput>
                     <View>
                         <CustomisedInput
@@ -59,7 +58,7 @@ export const RegistrationScreen = ({ navigation }) => {
                             onChangeText={setPassword}
                             
                         /> 
-                        <TouchableOpacity style={styles.eyeIcon} onPress={togglePassword}>
+                        <TouchableOpacity onPress={togglePassword}>
                                     {passwordVisible ? (
                                         <Text style={styles.passwordToggle}>Show</Text>
                                     ) : (
