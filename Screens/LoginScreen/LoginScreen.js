@@ -3,7 +3,7 @@ import { ImageBackground, StyleSheet, View, Text, Button, SafeAreaView, Touchabl
 import { TextInput } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import RegisterButton from '../../Components/RegisterButton';
-import { Entypo } from '@expo/vector-icons';
+// import { Entypo } from '@expo/vector-icons';
 
 const backgroundImage = require('../../Images/BackgroundPhoto.jpeg');
 
@@ -20,6 +20,7 @@ export const LoginScreen = ({ navigation }) => {
         console.log(`${email}, ${password}`);
         setEmail('');
         setPassword('');
+        navigation.navigate('Home');
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -38,9 +39,12 @@ export const LoginScreen = ({ navigation }) => {
                             /> 
                             <TouchableOpacity style={styles.eyeIcon} onPress={togglePassword}>
                                 {passwordVisible ? (
-                                    <Entypo name='eye' size={20} color='black'/>         
+                                    // Alternative with eye icon
+                                    // <Entypo name='eye' size={20} color='black'/>  
+                                    <Text style={styles.passwordToggle}>Show</Text>
                                     ) : (
-                                    <Entypo name='eye-with-line' size={20} color='black'/>
+                                    // <Entypo name='eye-with-line' size={20} color='black'/>
+                                    <Text style={styles.passwordToggle}>Hide</Text>
                                 )}
                             </TouchableOpacity>        
                         </View>
@@ -113,10 +117,17 @@ const styles = StyleSheet.create({
     keyContainer: {
         flex: 1,
     },
-    eyeIcon: {
+    // eyeIcon: {
+    //     color: '#1B4371',
+    //     position: 'absolute',
+    //     right: 16,
+    //     top: 16,
+    // },
+    passwordToggle: {
         color: '#1B4371',
+        fontSize: 16,
         position: 'absolute',
+        top: -35,
         right: 16,
-        top: 16,
-    },
+    }
 })

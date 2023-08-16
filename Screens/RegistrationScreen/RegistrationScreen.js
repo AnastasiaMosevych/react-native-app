@@ -1,10 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View, Text, Image, ImageBackground, TextInput, TouchableWithoutFeedback, TouchableOpacity, Button, Keyboard, SafeAreaView } from "react-native";
+import { Dimensions, StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback, TouchableOpacity, Button, Keyboard, SafeAreaView } from "react-native";
+import { CustomisedInput } from '../../Components/CustomisedInput';
 import { PlusCircle } from 'react-native-feather';
 import RegisterButton from '../../Components/RegisterButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Entypo } from '@expo/vector-icons';
 
 const window = Dimensions.get('window');
 const backgroundImage = require('../../Images/BackgroundPhoto.jpeg');
@@ -15,6 +15,7 @@ export const RegistrationScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [avatar, setAvatar] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(true);
+    const [isFocused, setIsFocused] = useState(false);
 
     const togglePassword = () => {
         setPasswordVisible(!passwordVisible);
@@ -25,6 +26,7 @@ export const RegistrationScreen = ({ navigation }) => {
         setLogin('');
         setEmail('');
         setPassword('');
+        navigation.navigate('Home');
     } 
 
     return (
@@ -40,22 +42,29 @@ export const RegistrationScreen = ({ navigation }) => {
                         </View>
                     </View>
                     <Text style={styles.title}>Registration</Text>
-                    <TextInput value={login} style={styles.input} placeholder='Log in' onChangeText={setLogin}></TextInput>
-                    <TextInput value={email} style={styles.input} placeholder='Email address' onChangeText={setEmail}></TextInput>
+                            <CustomisedInput
+                                value={login}
+                                style={styles.input}
+                                placeholder='Log in'
+                                onChangeText={setLogin}
+                            >
+                            </CustomisedInput>
+                    <CustomisedInput value={email} style={styles.input} placeholder='Email address' onChangeText={setEmail}></CustomisedInput>
                     <View>
-                        <TextInput
+                        <CustomisedInput
                             value={password}
                             secureTextEntry={passwordVisible}
                             style={styles.input}
                             placeholder="Password"
                             onChangeText={setPassword}
+                            
                         /> 
                         <TouchableOpacity style={styles.eyeIcon} onPress={togglePassword}>
-                            {passwordVisible ? (
-                                <Entypo name='eye' size={20} color='black'/>         
-                                ) : (
-                                <Entypo name='eye-with-line' size={20} color='black'/>
-                            )}
+                                    {passwordVisible ? (
+                                        <Text style={styles.passwordToggle}>Show</Text>
+                                    ) : (
+                                        <Text style={styles.passwordToggle}>Hide</Text>
+                                    )}
                         </TouchableOpacity>        
                     </View>
                     <RegisterButton  onPress={onRegister} />
@@ -77,7 +86,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 165,
+        marginTop: 203,
         paddingLeft: 16,
         paddingRight: 16,
         paddingBottom: 78,
@@ -143,12 +152,14 @@ const styles = StyleSheet.create({
         height: 51,
         width: 343,
     },
-    eyeIcon: {
+    passwordToggle: {
         color: '#1B4371',
+        fontSize: 16,
         position: 'absolute',
+        top: -55,
         right: 16,
-        top: 16,
     }
+     
 })
 
 export default RegistrationScreen;
