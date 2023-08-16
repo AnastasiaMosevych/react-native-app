@@ -5,11 +5,11 @@ import CreatePostsScreen from '../CreatePostsScreen/CreatePosts';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LogOut, ArrowLeft } from "react-native-feather";
 import { StyleSheet, View } from 'react-native';
-
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tabs = createBottomTabNavigator();
 
-function TabBar({navigation}) {
+function TabBar({ navigation, state, route }) {
     return (
         <Tabs.Navigator  
             screenOptions={({ route }) => ({
@@ -37,7 +37,12 @@ function TabBar({navigation}) {
             tabBarActiveTintColor: "#FF6C00",
             tabBarInactiveTintColor: "#212121",
             tabBarShowLabel: false,
-            
+            tabBarStyle: ((route) => {
+              if (route.name === 'Create Posts') {
+                return { display: "none" }
+              }
+              return
+            })(route)
             })}
             
         >
@@ -67,7 +72,9 @@ function TabBar({navigation}) {
                     fontSize: 17,
                     },
                     headerLeft: () => (
-                        <ArrowLeft size={24} color='#212121' style={styles.arrowIcon}/>
+                        <ArrowLeft size={24} color='#212121' style={styles.arrowIcon} onPress={() => {
+                            navigation.navigate('Posts');
+                        }}/>
                     ),
                 }}
             />
@@ -79,7 +86,7 @@ function TabBar({navigation}) {
 
 export const Home = ({ navigation }) => {
     return (
-        <TabBar />
+        <TabBar navigation={navigation} />
     )
 }
 
