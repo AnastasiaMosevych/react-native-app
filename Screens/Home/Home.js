@@ -22,7 +22,7 @@ function TabBar({navigation}) {
                 : "user"
             } else if (route.name === "Posts") {
                 iconName = focused ? "grid" : "grid";
-            } else if (route.name === "CreatePosts") {
+            } else if (route.name === "Create Posts") {
                 iconName = focused ? "plus" : "plus"
             }
             if (iconName === 'plus') {
@@ -42,21 +42,21 @@ function TabBar({navigation}) {
             
         >
         <Tabs.Screen
-                name="Posts"
-                component={PostsScreen}
-                options={{
-                    title: "Posts",
-                    headerTitleStyle: {
-                        fontWeight: 500,
-                        fontSize: 17,
-                    },
+            name="Posts"
+            component={PostsScreen}
+            options={{
+                title: "Posts",
+                headerTitleStyle: {
+                    fontWeight: 500,
+                    fontSize: 17,
+                },
                 headerRight: () => (
                     <LogOut color="#BDBDBD" size={24} style={styles.logoutIcon}/>
                     
                 ),
-                }}
+            }}
             />
-            <Tabs.Screen name='CreatePosts' component={CreatePostsScreen}/>
+        <Tabs.Screen name='Create Posts' component={CreatePostsScreen}/>
         <Tabs.Screen name="Profile" component={ProfileScreen} />
     </Tabs.Navigator> 
     )
