@@ -3,14 +3,15 @@ import { ImageBackground, StyleSheet, View, Text, Button, SafeAreaView, Touchabl
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import RegisterButton from '../../Components/RegisterButton';
 import { CustomisedInput } from '../../Components/CustomisedInput';
-// import { Entypo } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const backgroundImage = require('../../Images/BackgroundPhoto.jpeg');
 
-export const LoginScreen = ({ navigation }) => {
+export const LoginScreen = ({ route }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(true);
+    const navigation = useNavigation();
 
     const togglePassword = () => {
         setPasswordVisible(!passwordVisible);
@@ -20,7 +21,10 @@ export const LoginScreen = ({ navigation }) => {
         console.log(`${email}, ${password}`);
         setEmail('');
         setPassword('');
-        navigation.navigate('Home');
+        console.log(route.params);
+        navigation.navigate('Home',
+            { email }
+        );
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>

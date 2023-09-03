@@ -25,7 +25,9 @@ export const RegistrationScreen = ({ navigation }) => {
         setLogin('');
         setEmail('');
         setPassword('');
-        navigation.navigate('Home');
+        navigation.navigate('Home',
+            { login, email }
+        );
     } 
 
     return (

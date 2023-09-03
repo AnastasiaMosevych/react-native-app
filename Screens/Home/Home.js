@@ -5,11 +5,11 @@ import CreatePostsScreen from '../CreatePostsScreen/CreatePosts';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LogOut, ArrowLeft } from "react-native-feather";
 import { StyleSheet, View } from 'react-native';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tabs = createBottomTabNavigator();
 
 function TabBar({ navigation, state, route }) {
+    const { email, login } = route.params;
     return (
         <Tabs.Navigator  
             screenOptions={({ route }) => ({
@@ -57,9 +57,9 @@ function TabBar({ navigation, state, route }) {
                 },
                 headerRight: () => (
                     <LogOut color="#BDBDBD" size={24} style={styles.logoutIcon}/>
-                    
                 ),
             }}
+            initialParams={{ login, email }}
             />
             <Tabs.Screen
                 name="Create Posts"
@@ -84,9 +84,9 @@ function TabBar({ navigation, state, route }) {
 }
 
 
-export const Home = ({ navigation }) => {
+export const Home = ({ navigation, route }) => {
     return (
-        <TabBar navigation={navigation} />
+        <TabBar navigation={navigation} route={route}/>
     )
 }
 
