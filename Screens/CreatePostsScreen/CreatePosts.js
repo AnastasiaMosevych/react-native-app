@@ -77,7 +77,8 @@ export const CreatePostsScreen = ({ onCancel = () => { }, mode = 'both', route }
         }
         
         if (locationInput && textInput) {
-            Geocoder.init('AIzaSyAt8ZBBPuSNMzTQahgqSbswNSiUu08aZDw');
+            // add API key
+            Geocoder.init('');
             Geocoder.from(locationInput)
                 .then(json => {
                     const locationComponent = json.results[0].geometry.location;
