@@ -6,6 +6,7 @@ import usePhotos from '../../Hooks/usePhotos';
 // import * as Location from "expo-location";
 import Geocoder from 'react-native-geocoding';
 import { useNavigation } from "@react-navigation/native";
+const { API_KEY } = process.env;
 
 export const CreatePostsScreen = ({ onCancel = () => { }, mode = 'both', route }) => {
     const navigation = useNavigation();
@@ -78,7 +79,7 @@ export const CreatePostsScreen = ({ onCancel = () => { }, mode = 'both', route }
         
         if (locationInput && textInput) {
             // add API key
-            Geocoder.init('');
+            Geocoder.init(API_KEY);
             Geocoder.from(locationInput)
                 .then(json => {
                     const locationComponent = json.results[0].geometry.location;
