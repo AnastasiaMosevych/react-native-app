@@ -1,6 +1,8 @@
 import React from 'react';
+import useCamera from '../../Hooks/useCamera';
+import usePhotos from '../../Hooks/usePhotos';
 import { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback, TouchableOpacity, Button, Keyboard, SafeAreaView } from "react-native";
+import { Alert, Dimensions, StyleSheet, View, Text, Image, ImageBackground, TouchableWithoutFeedback, TouchableOpacity, Button, Keyboard, SafeAreaView } from "react-native";
 import { CustomisedInput } from '../../Components/CustomisedInput';
 import { PlusCircle } from 'react-native-feather';
 import RegisterButton from '../../Components/RegisterButton';
@@ -9,15 +11,66 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const window = Dimensions.get('window');
 const backgroundImage = require('../../Images/BackgroundPhoto.jpeg');
 
-export const RegistrationScreen = ({ navigation }) => {
+export const RegistrationScreen = ({ onCancel = () => { }, mode = 'both', navigation }) => {
+    const camera = useCamera();
+    const photos = usePhotos();
     const [login, setLogin] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [avatar, setAvatar] = useState('');
+    const [avatar, setAvatar] = useState(null);
     const [passwordVisible, setPasswordVisible] = useState(true);
 
     const togglePassword = () => {
         setPasswordVisible(!passwordVisible);
+    }
+
+    const handleAvatar = async () => {
+        if (!avatar) {
+            switch (mode) {
+                case 'camera':
+                    selectAvatar('camera')
+                    break;
+                case 'photos':
+                    selectAvatar('photos');
+                    break;
+                case 'both':
+                default:
+                    Alert.alert(
+                        'Please choose',
+                        null,
+                        [
+                            { text: 'Photos', onPress: () => selectAvatar('photos') },
+                            { text: 'Camera', onPress: () => selectAvatar('camera') },
+                            { text: 'Cancel', style: 'cancel' }
+                        ]
+                    );
+            }
+        } else {
+            Alert.alert('Remove', 'are you sure you want to remove this image?', [
+                { text: 'Yes', onPress: () => setAvatar(null) },
+                { text: 'No' },
+            ]);
+        }
+    };
+
+    const selectAvatar = async (pickerType) => {
+        try {
+            if (pickerType === 'camera') {
+                const result = await camera.takePhoto({
+                    allowEditing: true,
+                    quality: 0.5
+                })
+                result.canceled ? oncancel() : setAvatar(result.assets[0].uri);
+            } else {
+                const result = await photos.selectAvatar({
+                    quality: 0.5
+                });
+                result.canceled ? oncancel() : setAvatar(result.assets[0].uri);
+            }
+        } catch (error) {
+            Alert.alert('Avatar error', 'Error reading image');
+            console.log(error);
+        }
     }
 
     const onRegister = () => {
@@ -26,7 +79,7 @@ export const RegistrationScreen = ({ navigation }) => {
         setEmail('');
         setPassword('');
         navigation.navigate('Home',
-            { login, email }
+            { login, email, avatar }
         );
     } 
 
@@ -38,9 +91,9 @@ export const RegistrationScreen = ({ navigation }) => {
                 <View style={{ ...styles.container}}>
                     <View style={styles.avatarWrapper}>
                         <Image source={avatar ? { uri: avatar } : null} style={styles.avatar}></Image>
-                        <View>
+                        <TouchableOpacity onPress={handleAvatar}>
                         <PlusCircle stroke='#FF6C00' fill='#FFFFFF' width={25} height={25} style={{position: 'absolute', top: -40, right: -10}} />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <Text style={styles.title}>Registration</Text>
                     <CustomisedInput

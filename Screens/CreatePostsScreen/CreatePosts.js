@@ -5,8 +5,8 @@ import useCamera from '../../Hooks/useCamera';
 import usePhotos from '../../Hooks/usePhotos';
 // import * as Location from "expo-location";
 import Geocoder from 'react-native-geocoding';
+import { REACT_APP_API_KEY } from "@env";
 import { useNavigation } from "@react-navigation/native";
-const { API_KEY } = process.env;
 
 export const CreatePostsScreen = ({ onCancel = () => { }, mode = 'both', route }) => {
     const navigation = useNavigation();
@@ -68,6 +68,8 @@ export const CreatePostsScreen = ({ onCancel = () => { }, mode = 'both', route }
         }
     };
 
+    Geocoder.init(REACT_APP_API_KEY);
+
     const onPublish = () => {
          if (!textInput.trim()) {
              alert('Please Enter Name')
@@ -78,8 +80,6 @@ export const CreatePostsScreen = ({ onCancel = () => { }, mode = 'both', route }
         }
         
         if (locationInput && textInput) {
-            // add API key
-            Geocoder.init(API_KEY);
             Geocoder.from(locationInput)
                 .then(json => {
                     const locationComponent = json.results[0].geometry.location;

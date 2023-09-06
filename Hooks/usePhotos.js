@@ -15,9 +15,13 @@ export default usePhotos = () => {
         }
     }
 
+    const selectAvatar = async (options) => {
+        options = { mediaTypes: ImagePicker.MediaTypeOptions.Images, ...options };
+        return await ImagePicker.launchImageLibraryAsync(options);
+    }
+
     const selectImage = async (options) => {
         options = {mediaTypes: ImagePicker.MediaTypeOptions.Images, ...options };
-
         return await ImagePicker.launchImageLibraryAsync(options);
     }
 
@@ -25,5 +29,5 @@ export default usePhotos = () => {
         requestPermission();
     }, []);
 
-    return {selectImage};
+    return {selectImage, selectAvatar};
 };

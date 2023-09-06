@@ -9,7 +9,7 @@ import { StyleSheet, View } from 'react-native';
 const Tabs = createBottomTabNavigator();
 
 function TabBar({ navigation, state, route }) {
-    const { email, login } = route.params;
+    const { email, login, avatar } = route.params;
     return (
         <Tabs.Navigator  
             screenOptions={({ route }) => ({
@@ -59,7 +59,7 @@ function TabBar({ navigation, state, route }) {
                     <LogOut color="#BDBDBD" size={24} style={styles.logoutIcon}/>
                 ),
             }}
-            initialParams={{ login, email }}
+            initialParams={{ login, email, avatar }}
             />
             <Tabs.Screen
                 name="Create Posts"

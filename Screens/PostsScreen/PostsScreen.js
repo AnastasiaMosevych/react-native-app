@@ -6,16 +6,18 @@ import PostScreen from "./PostScreen";
 
 export const PostsScreen = ({ route }) => {
     const navigation = useNavigation();
-    const { login, email } = route.params;
+    const { login, email, avatar } = route.params;
     
     return (
-        <View style={{marginTop: 32, marginBottom: 32}}>
-            <View>
-                <Image source={null} style={{width: 60, height: 60, borderRadius: 16}} />
-            </View>
-            <View style={{marginLeft: 16}}>
-                <Text style={styles.login}>{login}</Text>
-                <Text style={styles.email}>{email}</Text>
+        <View style={{ marginTop: 32, marginBottom: 32 }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View>
+                    <Image source={{ uri: avatar }} style={{width: 60, height: 60, borderRadius: 16, marginLeft: 16}} />
+                </View>
+                <View style={{marginLeft: 8}}>
+                    <Text style={styles.login}>{login}</Text>
+                    <Text style={styles.email}>{email}</Text>
+                </View>
             </View>
             <PostScreen/>
         </View>
