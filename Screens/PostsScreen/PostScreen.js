@@ -29,10 +29,11 @@ export const PostScreen = () => {
             {textInput &&
                 <Text style={styles.name}>{textInput}</Text>
             }   
-                <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-                {textInput && <TouchableOpacity style={{ marginTop: 8 }}>
-                    <Feather name="message-circle" size={24} style={{ color: '#BDBDBD' }} onPress={onCommentPress} />
-                </TouchableOpacity>
+            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+                {textInput &&
+                    <TouchableOpacity style={{ marginTop: 8 }}>
+                        <Feather name="message-circle" size={24} style={{ color: '#BDBDBD' }} onPress={onCommentPress} />
+                    </TouchableOpacity>
                 }
                 {image &&
                     <TouchableOpacity style={{ marginLeft: 49, flexDirection: 'row', alignItems: 'center' }} onPress={onLocation}>
@@ -40,7 +41,8 @@ export const PostScreen = () => {
                         <Text style={{ textDecorationLine: 'underline', fontSize: 16 }}>{locationInput}</Text>
                     </TouchableOpacity>
                 }
-                </View>
+                
+            </View>
         </View>
     )
     

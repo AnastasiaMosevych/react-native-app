@@ -15,7 +15,7 @@ export const CommentsScreen = () => {
         if (commentInput === "") {
             alert('Please write a comment')
         }
-        setCommentInput('')
+        setCommentInput('');
     }
 
     return (
@@ -72,12 +72,12 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         borderWidth: 1,
         borderColor: '#BDBDBD',
-        borderRadius: 100,
+        borderRadius: 50,
     }, 
     iconWrapper: {
         position: 'absolute',
         top: -40,
-        left: 120,
+        left: 130,
         width: 34,
         height: 34,
         backgroundColor: '#FF6C00',

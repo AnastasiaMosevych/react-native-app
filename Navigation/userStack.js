@@ -1,17 +1,15 @@
 import { navigationRef } from './Navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen } from '../Screens/LoginScreen/LoginScreen';
 import { Home } from '../Screens/Home/Home';
 import { ArrowLeft } from "react-native-feather";
 import { StyleSheet, ImageBackground } from 'react-native';
 import CommentsScreen from '../Screens/CommentsScreen/CommentsScreen';
-import RegistrationScreen from '../Screens/RegistrationScreen/RegistrationScreen';
 import MapScreen from '../Screens/MapScreen/MapScreen';
 
 const Stack = createStackNavigator();
 
-export default function AppNavigation({ navigation }) {
+export default function UserStack({ navigation }) {
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
@@ -19,13 +17,6 @@ export default function AppNavigation({ navigation }) {
                 screenOptions={{
                 headerShown: false
                 }}>
-            <Stack.Screen
-                name="Registration"
-                component={RegistrationScreen}
-            />
-            <Stack.Screen 
-                name="Login" 
-                component={LoginScreen} />
             <Stack.Screen
                 name="Home"
                 component={Home}

@@ -5,28 +5,51 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import RegisterButton from '../../Components/RegisterButton';
 import { CustomisedInput } from '../../Components/CustomisedInput';
 import { useNavigation } from '@react-navigation/native';
+import { auth } from '../../config/firebase';
+import { login } from '../../redux/action';
+import { signInWithEmailAndPassword, AuthErrorCodes } from 'firebase/auth';
 
 const backgroundImage = require('../../Images/BackgroundPhoto.jpeg');
 
 export const LoginScreen = ({ route }) => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(true);
+    const [isSignedIn, setIsSignedIn] = useState(false);
     const navigation = useNavigation();
 
     const togglePassword = () => {
         setPasswordVisible(!passwordVisible);
     }
 
-    const onLogin = () => {
-        console.log(`${email}, ${password}`);
-        setEmail('');
-        setPassword('');
-        console.log(route.params);
+    const loginUser = () => {
+        signInWithEmailAndPassword(auth, email, password)
+            .then((re) => {
+                console.log(re)
+                setIsSignedIn(true);
+            })
+            .catch((err) => {
+                console.log(err);
+                if (
+                    err.code === AuthErrorCodes.INVALID_PASSWORD ||
+                    err.code === AuthErrorCodes.USER_DELETED ||
+                    err.code === 'auth/invalid-login-credentials'
+                ) {
+                    alert("The email address or password is incorrect");
+                    navigation.navigate('Login')
+                } else {
+                console.log(err.code);
+                alert(err.code);
+                }
+            });
+        console.log(`I'm in loginUser. Email: ${email}`)
+        dispatch(login(email))
         navigation.navigate('Home',
-            { email }
+           {}
         );
-    }
+    } 
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
@@ -53,7 +76,7 @@ export const LoginScreen = ({ route }) => {
                                 )}
                             </TouchableOpacity>        
                         </View>
-                        <RegisterButton title="Log in" style={styles.button} onPress={onLogin}></RegisterButton>
+                        <RegisterButton title="Log in" style={styles.button} onPress={loginUser}></RegisterButton>
                         <Button title="Don't have an account? Register" style={styles.secondButton} onPress={() => navigation.navigate('Registration')}></Button>
                     </View>
                 </KeyboardAwareScrollView>

@@ -5,11 +5,31 @@ import CreatePostsScreen from '../CreatePostsScreen/CreatePosts';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LogOut, ArrowLeft } from "react-native-feather";
 import { StyleSheet, View } from 'react-native';
+import { auth } from '../../config/firebase';
+import { signOut } from 'firebase/auth';
+import { useState } from 'react';
+import { useAuth } from '../../Hooks/useAuth';
 
 const Tabs = createBottomTabNavigator();
 
 function TabBar({ navigation, state, route }) {
-    const { email, login, avatar } = route.params;
+    console.log(`Ths is Route Params in TabBar ${route.params}`)
+    const { login, avatar } = route.params;
+    const { email } = useAuth();
+    console.log(`We're in TabBar. Is here an email? ${email}`)
+    const [isSignedIn, setIsSignedIn] = useState(false);
+
+    const signOutUser = () => {
+        signOut(auth)
+            .then((re) => {
+                setIsSignedIn(false)
+                navigation.navigate('Registration')
+            })
+            .catch((error) => {
+            console.log(error.message)
+        })
+    }
+
     return (
         <Tabs.Navigator  
             screenOptions={({ route }) => ({
@@ -56,7 +76,7 @@ function TabBar({ navigation, state, route }) {
                     fontSize: 17,
                 },
                 headerRight: () => (
-                    <LogOut color="#BDBDBD" size={24} style={styles.logoutIcon}/>
+                    <LogOut color="#BDBDBD" size={24} style={styles.logoutIcon} onPress={signOutUser}/>
                 ),
             }}
             initialParams={{ login, email, avatar }}

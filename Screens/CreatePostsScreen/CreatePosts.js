@@ -104,7 +104,7 @@ export const CreatePostsScreen = ({ onCancel = () => { }, mode = 'both', route }
                 // setLocation(coords);
         }
     }
-
+    // fix bug, text and location input stay after clicking delete button
     const onDelete = () => {
         setImage(null);
         setTextInput('');

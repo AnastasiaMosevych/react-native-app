@@ -7,6 +7,8 @@ import { CustomisedInput } from '../../Components/CustomisedInput';
 import { PlusCircle } from 'react-native-feather';
 import RegisterButton from '../../Components/RegisterButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { auth } from '../../config/firebase';
+import { createUserWithEmailAndPassword, AuthErrorCodes, updateProfile } from 'firebase/auth';
 
 const window = Dimensions.get('window');
 const backgroundImage = require('../../Images/BackgroundPhoto.jpeg');
@@ -60,12 +62,12 @@ export const RegistrationScreen = ({ onCancel = () => { }, mode = 'both', naviga
                     allowEditing: true,
                     quality: 0.5
                 })
-                result.canceled ? oncancel() : setAvatar(result.assets[0].uri);
+                result.canceled ? onCancel() : setAvatar(result.assets[0].uri);
             } else {
                 const result = await photos.selectAvatar({
                     quality: 0.5
                 });
-                result.canceled ? oncancel() : setAvatar(result.assets[0].uri);
+                result.canceled ? onCancel() : setAvatar(result.assets[0].uri);
             }
         } catch (error) {
             Alert.alert('Avatar error', 'Error reading image');
@@ -73,15 +75,40 @@ export const RegistrationScreen = ({ onCancel = () => { }, mode = 'both', naviga
         }
     }
 
-    const onRegister = () => {
-        console.log(`${login}, ${email}, ${password}`);
-        setLogin('');
-        setEmail('');
-        setPassword('');
-        navigation.navigate('Home',
-            { login, email, avatar }
-        );
+    const registerUser = () => {
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredentials) => {
+                if (userCredentials.user) {
+                    updateProfile(auth.currentUser, {
+                        displayName: login
+                    }).then(() => {
+                        navigation.navigate('Home', { login, avatar, email })
+                        setLogin('');
+                        setEmail('');
+                        setPassword('');
+                        setAvatar(null);
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log(error.message);
+                if (error.code === AuthErrorCodes.WEAK_PASSWORD) {
+                    alert("The password is too weak");
+                    navigation.navigate('Registration')
+                }
+                if (error.code === 'auth/email-already-in-use') {
+                    alert("Email is already in use")
+                    navigation.navigate('Registration')
+                }
+                if (error.code === 'auth/invalid-email') {
+                    alert("Email invalid")
+                    navigation.navigate('Registration')
+                }
+            });
+        
     } 
+
+    
 
     return (
         <SafeAreaView style={{ flex : 1 }}>
@@ -92,7 +119,11 @@ export const RegistrationScreen = ({ onCancel = () => { }, mode = 'both', naviga
                     <View style={styles.avatarWrapper}>
                         <Image source={avatar ? { uri: avatar } : null} style={styles.avatar}></Image>
                         <TouchableOpacity onPress={handleAvatar}>
-                        <PlusCircle stroke='#FF6C00' fill='#FFFFFF' width={25} height={25} style={{position: 'absolute', top: -40, right: -10}} />
+                            {!avatar ?
+                                <PlusCircle stroke='#FF6C00' fill='#FFFFFF' width={25} height={25} style={{ position: 'absolute', top: -40, right: -10 }} />
+                                : 
+                                <PlusCircle stroke='#E8E8E8' fill='#FFFFFF' width={25} height={25} style={{ border: 1, borderColor: '#BDBDBD', position: 'absolute', top: -40, right: -10, transform: [{ rotate: '-45deg' }] }} />      
+                            }
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.title}>Registration</Text>
@@ -121,15 +152,14 @@ export const RegistrationScreen = ({ onCancel = () => { }, mode = 'both', naviga
                                     )}
                         </TouchableOpacity>        
                     </View>
-                    <RegisterButton  onPress={onRegister} />
+                    <RegisterButton  onPress={registerUser} />
                     <Button title="Already have an account? Log in" style={styles.secondButton} onPress={() => navigation.navigate('Login')}></Button>
                     </View>
                     </TouchableWithoutFeedback>
                 <View style={{ height: 80 }} />
                 </KeyboardAwareScrollView>
             </ImageBackground>
-        </SafeAreaView>
-            
+        </SafeAreaView>      
     )
 }
 
@@ -159,7 +189,9 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         backgroundColor: '#F6F6F6',
   },
-    avatar: { width: 120, height: 120 },
+    avatar: {
+        width: 120, height: 120, borderRadius: 16,
+    },
     title: {
         fontFamily: 'RobotoBold',
         marginTop: 92,
@@ -198,7 +230,7 @@ const styles = StyleSheet.create({
      button: {
         marginTop: 27,
         marginBottom: 16,
-         backgroundColor: '#FF6C00',
+        backgroundColor: '#FF6C00',
         color: 'white',
         borderRadius: 50,
         padding: 16,
